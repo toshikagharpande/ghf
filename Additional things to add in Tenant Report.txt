@@ -1,0 +1,16 @@
+No of dashboards, no of apps, no of gateways, no of pipelines, no of capacities, no of report downloads, dataset edits, dataflow updated 
+
+
+visuals
+top used datasets by dashboard count 
+top workspaces by user count 
+top workpsace by dashboard 
+peak traffic hours for dataset refresh 
+
+
+license details - Active PPU License cost, Active Pro License cost, PPU License cost, Pro license cost, pro license termination, premium license termination , license type activity , user license overview table 
+
+
+report views in 30, 50, 90 days, peak hours by report view, peak hours by dataset refresh 
+
+Treemap visual by workpsace , workspace name , dashboard names , report names, dataset names
