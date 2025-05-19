@@ -1,0 +1,53 @@
+1. Core Problem & Objective:
+
+The primary goal is to automate the process of identifying available time windows to perform work (like P6 software upgrades or database consolidations) on various P6 (Primavera) database instances. P6 is a critical scheduling tool used for maintenance activities in refineries and production regions.
+Work on these database instances cannot be performed during specific periods called "TARs" (Turnarounds, Outages, Shutdowns).
+The automation needs to find the "white space" or windows of availability between these TAR periods.
+A buffer period (e.g., 3-4 weeks before and after a TAR) must also be considered as restricted time where work cannot occur.
+2. Current Manual Process (To Be Replaced):
+
+Rob McKinlay currently performs this task manually.
+He accesses a website called "On Target" to find the schedule for TARs across all relevant sites (refineries and production regions).
+He extracts key information: Site/Region name, TAR start date, and TAR duration.
+He manually calculates the TAR end dates (as they are not provided directly).
+He manually identifies the available windows between these TAR periods, factoring in the buffer zones.
+He visualizes this on an Excel spreadsheet, using colored blocks for TARs and leaving white space for available windows, organized by database instance.
+He also manually adds and maintains information about which sites belong to which database instance, the P6 version of each instance, and future consolidation plans onto this spreadsheet.
+He needs to periodically re-check "On Target" for any changes to TAR schedules (delays, extensions, rescheduling, cancellations) and update his spreadsheet accordingly.
+3. Data Sources and Required Information:
+
+On Target Website: The single source of truth for all TAR schedules.
+Required Fields:
+Site/Region Name.
+TAR Start Date (Specifically the earliest "Units Oil Out" date within a related cluster of activities for a TAR).
+TAR Duration (in days).
+TAR Event Code/Name (May need mapping to specific regions, especially for Global Production instances).
+Timeframe: Focus on the current year and the next year (approx. 24 months out).
+Exclusions: Monetary values, hours data, and the map visualization on the site are not required.
+Database Instance Mapping: Information defining which refinery or production region belongs to which specific P6 database instance. This is crucial because work availability is determined at the instance level.
+This mapping needs to be provided by Rob, likely via a spreadsheet or list.
+This mapping is dynamic and changes due to consolidation efforts (e.g., standalone instances being merged into larger regional instances like EU2). Rob will provide the current state and roadmap.
+P6 Version Information: The current P6 version running on each database instance.
+This data is available elsewhere (telemetry page/spreadsheet) and can potentially be integrated. Rob will include this in the data he provides.
+4. Required Calculations and Logic:
+
+Calculate TAR End Date: For each TAR cluster at a site/region, determine the latest finish date by adding the duration to the relevant start date(s). This needs careful handling as a cluster can have multiple activities with different start dates and durations. Note: TARs run 365 days a year (no breaks for weekends/holidays).
+Identify Blocked Periods per Instance: For each database instance, aggregate all the TAR periods (Start Date to Calculated Latest Finish Date) for all sites/regions belonging to that instance. Apply the buffer period (e.g., 3-4 weeks) before the start and after the end of each aggregated TAR block.
+Identify Available Windows per Instance: Determine the time periods ("white space") between these calculated blocked periods for each database instance. Consider a minimum duration needed for a window to be viable for work (e.g., 5-6 weeks mentioned for upgrades).
+5. Key Functionality & Features:
+
+Automated Data Retrieval & Processing: The solution should automatically get data from On Target (or its underlying source), perform the necessary calculations, and identify the available windows.
+Timeline Visualization: Present the information clearly, likely using a timeline format similar to Rob's Excel sheet (Power BI was mentioned as a potential tool). This should show TARs (blocked time) and available windows per database instance.
+Change Notification System: A crucial requirement is to automatically notify Rob whenever there is a change in the TAR data within On Target (start date, duration change, rescheduling, cancellation). This removes the need for manual checking and ensures planning is based on current data.
+Data Integration: Combine data from On Target, the P6 version source, and the database instance mapping provided by Rob.
+Filtering: Allow filtering the view by execution year (up to ~24 months).
+(Optional) User Input: Potentially allow Rob to mark or annotate the timeline with planned upgrade slots within the identified available windows.
+6. Technical Considerations & Next Steps:
+
+Investigate how to access the "On Target" data – directly from the site or potentially via an underlying database or API (Toshika to explore access to the Power BI App/Workspace mentioned).
+Rob will provide an updated spreadsheet containing the Site/Region -> DB Instance mapping, P6 versions, and a consolidation roadmap overview.
+Ganiyat will formally document the As-Is process and the To-Be requirements.
+Toshika will develop a technical solution proposal, including effort and cost estimates.
+The team needs to quantify the business value, potentially requiring input from TAR/business contacts (Rob to help connect Ganiyat).
+In essence, the project aims to replace a time-consuming, manual, and potentially error-prone process with an automated solution that provides a reliable, up-to-date view of when critical P6 database work can be safely scheduled, significantly improving planning efficiency and reducing risk.
+
